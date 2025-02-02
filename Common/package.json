@@ -1,6 +1,6 @@
 {
-  "name": "@insure/common",
-  "version": "1.0.1",
+  "name": "@insureit/common",
+  "version": "1.0.2",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "publishConfig": {
