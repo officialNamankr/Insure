@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: namankr301/insure_auth
+          env:
+            - name: INSURE_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: insure-jwt-secret
+                  key: JWT_KEY
+            - name: MONGO_URI
+              valueFrom:
+                  secretKeyRef:
+                    name: insure-auth-db
+                    key: MONGODB_URI
+            # - name: RABBITMQ_URL
+            #   value: "amqp://rabbitmq-srv:5672"
+            # - name: REDIS_HOST
+            #   value: auth-redis-srv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
